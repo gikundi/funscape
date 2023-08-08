@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-alpine
+FROM adoptopenjdk:11-jre-hotspot
 
 EXPOSE 8080
 
