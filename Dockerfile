@@ -1,9 +1,13 @@
-FROM adoptopenjdk:11-jre-hotspot
+# Build stage
+FROM openjdk:11 AS build
+WORKDIR /app
+COPY . /app
+RUN ./gradlew build
 
-EXPOSE 8080
-
-COPY ./build/libs/java-app-1.0-SNAPSHOT.jar /usr/app/
+# Final image
+FROM openjdk:11
 WORKDIR /usr/app
+COPY --from=build /app/build/libs/java-app-1.0-SNAPSHOT.jar /usr/app/
+CMD ["java", "-jar", "java-app-1.0-SNAPSHOT.jar"]
 
-ENTRYPOINT ["java", "-jar", "my-app-1.0-SNAPSHOT.jar"]
 
