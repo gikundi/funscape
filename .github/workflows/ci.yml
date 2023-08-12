@@ -1,0 +1,39 @@
+name: Java CI with Gradle
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: '7.2'
+
+    - name: Build & push Docker image 
+      uses: mr-smithers-excellent/docker-build-push@v6
+      with:
+        image: gikundi/funscape
+        tags: v1, latest
+        registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
