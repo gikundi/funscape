@@ -1,10 +1,9 @@
-FROM openjdk:8-jdk
-
-RUN mkdir /app
-
-COPY app.jar /app/app.jar
-
-WORKDIR /app
+FROM adoptopenjdk:11-jre-hotspot
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+COPY ./build/libs/java-app-1.0-SNAPSHOT.jar /usr/app/
+WORKDIR /usr/app
+
+ENTRYPOINT ["java", "-jar", "my-app-1.0-SNAPSHOT.jar"]
+
